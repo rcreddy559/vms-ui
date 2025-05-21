@@ -6,4 +6,5 @@ export interface VmsState extends Residents {
   inputErrorMessage: string;
   currentPage: string;
   sidebarOpen: boolean;
+  isAuthenticated: boolean;
 }

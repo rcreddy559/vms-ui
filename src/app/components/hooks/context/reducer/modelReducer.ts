@@ -8,18 +8,13 @@ import { VmsAction } from "@/app/components/types/VmsAction";
 
 export function modelReducer(state: VmsState, action: VmsAction): VmsState {
   switch (action.type) {
-    //case "SET_STOCKS":
-    // return {
-    //   ...state,
-    //   stocks: action.stocks,
-    //   currentPage: "STOCKS_LIST",
-    // };
     case SET_USERS:
       return {
         ...state,
         resident: action.residents,
         currentPage: USERS_LIST,
       };
+
     case SET_CURRENT_PAGE:
       return {
         ...state,

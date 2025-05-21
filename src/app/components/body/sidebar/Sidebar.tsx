@@ -1,115 +1,94 @@
-import { useState } from "react";
-import { FaUser, FaTrophy, FaCloudDownloadAlt } from "react-icons/fa";
-import { IoChatbubbleEllipsesSharp } from "react-icons/io5";
-import { FiUsers, FiBell, FiStar, FiCloud } from "react-icons/fi";
+import { useContext, useState } from "react";
+import { VmsContext } from "@/app/components/hooks/context/VmsProvider";
 import { MdOutlineExpandMore } from "react-icons/md";
 
+// Sidebar menu items
+const sidebarMenu = [
+  { icon: "🏠", label: "Dashboard", badge: 0 },
+  { icon: "👥", label: "Residents", badge: 0 },
+  { icon: "📦", label: "Packages", badge: 1 },
+  { icon: "🔔", label: "Notifications", badge: 5 },
+  { icon: "⚙️", label: "Settings", badge: 0 },
+];
+
 const Sidebar = () => {
-  const [collapsed, setCollapsed] = useState(false);
-  const [showDownloads, setShowDownloads] = useState(true);
+  const { sidebarOpen, setSidebarOpen } = useContext(VmsContext);
 
   return (
-    <div
-      className={`h-screen bg-[#1e1e3f] text-white transition-all duration-300 ${
-        collapsed ? "w-20" : "w-64"
-      } flex flex-col`}
-    >
-      {/* Toggle Button */}
-      <div className="relative p-2 text-right">
-        <button
-          onClick={() => setCollapsed(!collapsed)}
-          className="absolute right-[-10px] top-1/2 transform -translate-y-1/2 bg-[#3d3d65] text-white rounded-full p-1"
+      <div
+          className={`fixed inset-0 z-40 transition-all duration-300 ${
+              sidebarOpen ? "visible" : "invisible pointer-events-none"
+          }`}
+      >
+        {/* Overlay */}
+        <div
+            className={`absolute inset-0 bg-black/40 transition-opacity ${
+                sidebarOpen ? "opacity-100" : "opacity-0"
+            }`}
+            onClick={() => setSidebarOpen(false)}
+        />
+
+        {/* Sidebar */}
+        <aside
+            className={`absolute left-0 top-0 h-full w-72 bg-[#1e1e3f] text-white shadow-lg flex flex-col transition-transform duration-300 ${
+                sidebarOpen ? "translate-x-0" : "-translate-x-full"
+            }`}
         >
-          ❯
-        </button>
-      </div>
-
-      {/* User */}
-      <div className="flex items-center gap-3 p-4">
-        <img src="/avatar.jpg" alt="User" className="w-10 h-10 rounded-full" />
-        {!collapsed && (
-          <div>
-            <p className="text-sm text-gray-400">Hello</p>
-            <p className="font-semibold">Sara R.</p>
-          </div>
-        )}
-      </div>
-
-      <div className="flex-1">
-        <ul className="space-y-2 text-sm px-2">
-          <SidebarItem
-            icon={<FiUsers />}
-            text="Online Friends"
-            badge="3"
-            collapsed={collapsed}
-          />
-          <SidebarItem
-            icon={<IoChatbubbleEllipsesSharp />}
-            text="Chat"
-            collapsed={collapsed}
-          />
-          <SidebarItem
-            icon={<FaTrophy />}
-            text="Trophy"
-            collapsed={collapsed}
-          />
-          <SidebarItem
-            icon={<FiStar />}
-            text="Daily Challenges"
-            collapsed={collapsed}
-          />
-          <SidebarItem
-            icon={<FiBell />}
-            text="Notifications"
-            badge="9"
-            collapsed={collapsed}
-          />
-          <SidebarItem icon={<FiCloud />} text="Cloud" collapsed={collapsed} />
-
-          {/* Downloads Section */}
-          <div>
+          {/* Header */}
+          <div className="flex items-center gap-4 px-6 py-5 border-b border-white/10">
+            <img
+                src="https://i.pravatar.cc/48?img=3"
+                alt="avatar"
+                className="w-12 h-12 rounded-full border-2 border-white/20"
+            />
+            <div>
+              <p className="text-xs text-gray-400">Hello</p>
+              <p className="font-semibold text-white">Alex Johnson</p>
+            </div>
             <button
-              onClick={() => setShowDownloads(!showDownloads)}
-              className="flex items-center gap-2 w-full text-left px-2 py-2 hover:bg-[#2e2e54] rounded"
+                onClick={() => setSidebarOpen(false)}
+                className="ml-auto text-gray-400 hover:text-white"
             >
-              <FaCloudDownloadAlt />
-              {!collapsed && (
-                <div className="flex justify-between w-full">
-                  <span>Downloads</span>
-                  <MdOutlineExpandMore
-                    className={`transition-transform ${
-                      showDownloads ? "rotate-180" : ""
-                    }`}
-                  />
-                </div>
-              )}
+              ✕
             </button>
-            {showDownloads && (
-              <ul className="ml-8 space-y-1 mt-1 text-xs">
-                <li>🎮 FIFA 2022</li>
-                <li>🃏 POKER Zynga</li>
-                <li>🔫 PUBG</li>
-                <li>🧠 Valorant</li>
-                <li>🧚‍♀️ Genshin Impact</li>
-              </ul>
-            )}
           </div>
-        </ul>
+
+          {/* Menu */}
+          <nav className="flex-1 px-4 py-6">
+            <ul className="space-y-2">
+              {sidebarMenu.map((item) => (
+                  <li key={item.label}>
+                    <a
+                        href="#"
+                        className="flex items-center gap-4 px-4 py-3 rounded-lg hover:bg-[#2e2e54] transition group"
+                    >
+                      <span className="text-xl">{item.icon}</span>
+                      <span className="flex-1 text-white">{item.label}</span>
+                      {item.badge > 0 && (
+                          <span className="bg-yellow-400 text-black text-xs font-semibold px-2 py-0.5 rounded-full">
+                      {item.badge}
+                    </span>
+                      )}
+                    </a>
+                  </li>
+              ))}
+
+              {/* Downloads Dropdown */}
+              <li>
+
+              </li>
+            </ul>
+          </nav>
+
+          {/* Footer */}
+          <div className="px-6 py-4 border-t border-white/10">
+            <button className="w-full text-left text-red-400 hover:underline font-medium">
+              Logout
+            </button>
+          </div>
+        </aside>
       </div>
-    </div>
   );
 };
-
-const SidebarItem = ({ icon, text, badge, collapsed }: any) => (
-  <li className="flex items-center gap-2 px-2 py-2 hover:bg-[#2e2e54] rounded relative">
-    {icon}
-    {!collapsed && <span className="flex-1">{text}</span>}
-    {!collapsed && badge && (
-      <span className="bg-yellow-400 text-black text-xs px-2 rounded-full">
-        {badge}
-      </span>
-    )}
-  </li>
-);
 
 export default Sidebar;
