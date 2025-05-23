@@ -2,7 +2,7 @@ import React from "react";
 import { VmsScheme } from "../types/VmsScheme";
 import { getInitialState } from "../utils/getInitialState";
 import { modelReducer } from "./context/reducer/modelReducer";
-import {PAGE_SIDEBAR, SET_CURRENT_PAGE, SET_USERS} from "../utils/Constants";
+import {PAGE_SIDEBAR, SET_CURRENT_PAGE, SET_USERS, SET_AUTHENTICATED} from "../utils/Constants";
 
 const initialState = getInitialState();
 export function useVms(): VmsScheme {
@@ -19,6 +19,10 @@ export function useVms(): VmsScheme {
     },
     setSidebarOpen(sidebarStatus: boolean) {
       dsipatch({ type: PAGE_SIDEBAR, sidebarOpen: sidebarStatus });
+    },
+    setIsAuthenticated(isAuthenticated: boolean) {
+      console.log("----isAuthenticated------", isAuthenticated)
+      dsipatch({type:SET_AUTHENTICATED, isAuthenticated });
     }
   };
 }

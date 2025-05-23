@@ -1,9 +1,9 @@
 import {
-  IS_LOADING,
-  REQUEST_ERROR,
-  SET_USERS,
-  SET_CURRENT_PAGE,
-  PAGE_HOME, PAGE_SIDEBAR,
+    IS_LOADING,
+    REQUEST_ERROR,
+    SET_USERS,
+    SET_CURRENT_PAGE,
+    PAGE_HOME, PAGE_SIDEBAR, SET_AUTHENTICATED, PAGE_PROFILE,
 } from "../utils/Constants";
 import { Resident } from "./Resident";
 
@@ -31,9 +31,16 @@ interface SetSidebarOpen {
     sidebarOpen: boolean;
 }
 
+interface SetAuthenticated {
+    type: typeof SET_AUTHENTICATED;
+
+    isAuthenticated: boolean;
+}
+
 export type VmsAction =
   | SetErrorAction
   | IsLoading
   | SetResidentsAction
   | SetCurrentPage
-    | SetSidebarOpen;
+  | SetSidebarOpen
+  | SetAuthenticated;
